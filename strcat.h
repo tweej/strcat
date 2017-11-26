@@ -16,7 +16,7 @@ struct StringLike
     constexpr StringLike(const char (&str)[length]) noexcept
         : mStr(str), mLength(length-1)
     {}
-    
+
     // Char pointers
     // This must be a function template because of overload resolution rules,
     // otherwise string literals will prefer to decay to const char *.
@@ -24,40 +24,42 @@ struct StringLike
     constexpr StringLike(T str) noexcept
         : mStr(str), mLength(std::strlen(str))
     {}
-    
+
     // Char pointers with length
     constexpr StringLike(const char * const str, const std::size_t length) noexcept
         : mStr(str), mLength(length)
     {}
-    
+
     // STL strings
     StringLike(const std::string &str) noexcept
         : mStr(str.c_str()), mLength(str.length())
     {}
-    
+
     StringLike(const StringLike &) = delete;
     StringLike(StringLike &&)      = delete;
-    
+
     const char * const mStr;
     const std::size_t  mLength;
 };
 
 namespace { // internal linkage
-    std::size_t adder() { return 0; }
+    constexpr std::size_t adder() noexcept { return 0; }
 
-    std::size_t adder(const std::size_t size)
+    constexpr std::size_t adder(const std::size_t size) noexcept
     { return size; }
 
     template <typename ... Sizes>
-    std::size_t adder(const std::size_t first, const Sizes ... args)
+    constexpr std::size_t adder(const std::size_t first, const Sizes ... args) noexcept
     { return first + adder(args...); }
 
-    void append(const std::string &s) {}
+    void append(const std::string &s) noexcept {}
 
     template <typename T, typename ... Args>
-    void append(std::string &s, T && first, Args && ... others)
+    void append(std::string &s, T && first, Args && ... others) noexcept
     {
         const StringLike && ref = static_cast<const StringLike &&>(first);
+        // should not throw; already allocated and reserve() would have
+        // also thrown for size() > max_size()
         s.append(ref.mStr, ref.mLength);
         append(s, std::forward<Args>(others)...);
     }
@@ -68,16 +70,16 @@ std::string strcat(
     const StringLike & first,
     const StringLike & second,
     Str && ...         others)
-{ 
+{
     const std::size_t sum = first.mLength + second.mLength +
         adder((static_cast<const StringLike &&>(others).mLength)...);
-    
+
     std::string ret;
     ret.reserve(sum); // allocate once
 
     ret.append(first.mStr, first.mLength).append(second.mStr, second.mLength);
     append(ret, std::forward<Str>(others)...);
-    
+
     return ret;
 }
 
