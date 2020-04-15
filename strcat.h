@@ -35,9 +35,9 @@ template <typename ... Str>
 constexpr std::string strcat(
     std::string_view first,
     std::string_view second,
-    Str && ...       others) 
+    Str && ...       others)
 {
-    const std::size_t sum = first.size() + second.size() +
+    constexpr std::size_t sum = first.size() + second.size() +
         adder((static_cast<std::string_view>(others).size())...);
 
     std::string ret;
