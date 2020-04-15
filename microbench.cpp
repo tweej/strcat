@@ -6,6 +6,7 @@
 static void BM_Unoptimized_ShortStringLiteral_2(benchmark::State& state) {
     for(auto _ : state) {
         const std::string s = std::string("foo") + "bar";
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_ShortStringLiteral_2);
 
@@ -14,17 +15,22 @@ static void BM_Baseline_ShortStringLiteral_2(benchmark::State& state) {
         std::string s;
         s.reserve(6);
         s.append("foo").append("bar");
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_ShortStringLiteral_2);
 
 static void BM_Minimal_ShortStringLiteral_2(benchmark::State& state) {
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat("foo", "bar");
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_ShortStringLiteral_2);
 
 static void BM_Abseil_ShortStringLiteral_2(benchmark::State& state) {
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat("foo", "bar");
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_ShortStringLiteral_2);
 
 
@@ -147,6 +153,7 @@ static void BM_Unoptimized_ShortStrPtr_2(benchmark::State& state) {
     const char * const s1 = "bar";
     for(auto _ : state) {
         std::string s = std::string(s0) + s1;
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_ShortStrPtr_2);
 
@@ -158,21 +165,26 @@ static void BM_Baseline_ShortStrPtr_2(benchmark::State& state) {
         std::string s;
         s.reserve(std::strlen(s0) + std::strlen(s1));
         s.append(s0).append(s1);
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_ShortStrPtr_2);
 
 static void BM_Minimal_ShortStrPtr_2(benchmark::State& state) {
     const char * const s0 = "foo";
     const char * const s1 = "bar";
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat(s0, s1);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_ShortStrPtr_2);
 
 static void BM_Abseil_ShortStrPtr_2(benchmark::State& state) {
     const char * const s0 = "foo";
     const char * const s1 = "bar";
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat(s0, s1);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_ShortStrPtr_2);
 
 

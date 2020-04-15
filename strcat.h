@@ -2,45 +2,12 @@
 #define STRCAT_H
 
 #include <cstddef>
-#include <cstring>
 #include <string>
+#include <string_view>
 #include <utility>
 
 namespace minimal
 {
-
-struct StringLike
-{
-    // String literals
-    template <std::size_t length>
-    constexpr StringLike(const char (&str)[length]) noexcept
-        : mStr(str), mLength(length-1)
-    {}
-
-    // Char pointers
-    // This must be a function template because of overload resolution rules,
-    // otherwise string literals will prefer to decay to const char *.
-    template <typename T = const char * const>
-    constexpr StringLike(T str) noexcept
-        : mStr(str), mLength(std::strlen(str))
-    {}
-
-    // Char pointers with length
-    constexpr StringLike(const char * const str, const std::size_t length) noexcept
-        : mStr(str), mLength(length)
-    {}
-
-    // STL strings
-    StringLike(const std::string &str) noexcept
-        : mStr(str.c_str()), mLength(str.length())
-    {}
-
-    StringLike(const StringLike &) = delete;
-    StringLike(StringLike &&)      = delete;
-
-    const char * const mStr;
-    const std::size_t  mLength;
-};
 
 namespace { // internal linkage
     constexpr std::size_t adder() noexcept { return 0; }
@@ -52,32 +19,31 @@ namespace { // internal linkage
     constexpr std::size_t adder(const std::size_t first, const Sizes ... args) noexcept
     { return first + adder(args...); }
 
-    void append(const std::string &s) noexcept {}
+    constexpr void append(const std::string &s) noexcept {}
 
     template <typename T, typename ... Args>
-    void append(std::string &s, T && first, Args && ... others) noexcept
+    constexpr void append(std::string &s, T && first, Args && ... others) noexcept
     {
-        const StringLike && ref = static_cast<const StringLike &&>(first);
         // should not throw; already allocated and reserve() would have
         // also thrown for size() > max_size()
-        s.append(ref.mStr, ref.mLength);
+        s.append(static_cast<std::string_view>(first));
         append(s, std::forward<Args>(others)...);
     }
 } // unnamed namespace
 
 template <typename ... Str>
-std::string strcat(
-    const StringLike & first,
-    const StringLike & second,
-    Str && ...         others)
+constexpr std::string strcat(
+    std::string_view first,
+    std::string_view second,
+    Str && ...       others) 
 {
-    const std::size_t sum = first.mLength + second.mLength +
-        adder((static_cast<const StringLike &&>(others).mLength)...);
+    const std::size_t sum = first.size() + second.size() +
+        adder((static_cast<std::string_view>(others).size())...);
 
     std::string ret;
     ret.reserve(sum); // allocate once
 
-    ret.append(first.mStr, first.mLength).append(second.mStr, second.mLength);
+    ret.append(first).append(second);
     append(ret, std::forward<Str>(others)...);
 
     return ret;
