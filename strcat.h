@@ -9,7 +9,7 @@ namespace minimal
 {
 
 template <typename ... Str>
-constexpr std::string strcat(
+std::string strcat(
     std::string_view first,
     std::string_view second,
     Str && ...       others) 
