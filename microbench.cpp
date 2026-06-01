@@ -5,7 +5,8 @@
 
 static void BM_Unoptimized_ShortStringLiteral_2(benchmark::State& state) {
     for(auto _ : state) {
-        const std::string s = std::string("foo") + "bar";
+        std::string s = std::string("foo") + "bar";
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_ShortStringLiteral_2);
 
@@ -14,17 +15,22 @@ static void BM_Baseline_ShortStringLiteral_2(benchmark::State& state) {
         std::string s;
         s.reserve(6);
         s.append("foo").append("bar");
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_ShortStringLiteral_2);
 
 static void BM_Minimal_ShortStringLiteral_2(benchmark::State& state) {
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat("foo", "bar");
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_ShortStringLiteral_2);
 
 static void BM_Abseil_ShortStringLiteral_2(benchmark::State& state) {
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat("foo", "bar");
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_ShortStringLiteral_2);
 
 
@@ -34,6 +40,7 @@ static void BM_Unoptimized_ShortStringLiteral_10(benchmark::State& state) {
     for(auto _ : state) {
         std::string s = std::string("foo") + "bar" + "bat" + "hat" + "cat"
             + "dog" + "bog" + "cog" + "log" + "sob";
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_ShortStringLiteral_10);
 
@@ -44,20 +51,25 @@ static void BM_Baseline_ShortStringLiteral_10(benchmark::State& state) {
         s.append("foo").append("bar").append("bat").append("hat")
             .append("cat").append("dog").append("bog").append("cog")
             .append("log").append("sob");
+        benchmark::DoNotOptimize(s);
     }
 
 } BENCHMARK(BM_Baseline_ShortStringLiteral_10);
 
 static void BM_Minimal_ShortStringLiteral_10(benchmark::State& state) {
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat("foo", "bar", "bat", "hat", "cat",
             "dog", "bog", "cog", "log", "sob");
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_ShortStringLiteral_10);
 
 static void BM_Abseil_ShortStringLiteral_10(benchmark::State& state) {
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat("foo", "bar", "bat", "hat", "cat",
             "dog", "bog", "cog", "log", "sob");
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_ShortStringLiteral_10);
 
 
@@ -67,6 +79,7 @@ static void BM_Unoptimized_LongStringLiteral_2(benchmark::State& state) {
     for(auto _ : state) {
         std::string s = std::string("012345678901234567890123456789") +
             "123456789012345678901234567890";
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_LongStringLiteral_2);
 
@@ -76,19 +89,24 @@ static void BM_Baseline_LongStringLiteral_2(benchmark::State& state) {
         s.reserve(60);
         s.append("012345678901234567890123456789")
             .append("123456789012345678901234567890");
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_LongStringLiteral_2);
 
 static void BM_Minimal_LongStringLiteral_2(benchmark::State& state) {
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat(
             "012345678901234567890123456789", "123456789012345678901234567890");
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_LongStringLiteral_2);
 
 static void BM_Abseil_LongStringLiteral_2(benchmark::State& state) {
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat(
             "012345678901234567890123456789", "123456789012345678901234567890");
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_LongStringLiteral_2);
 
 
@@ -102,6 +120,7 @@ static void BM_Unoptimized_LongStringLiteral_10(benchmark::State& state) {
             "567890123456789012345678901234" + "678901234567890123456789012345" +
             "789012345678901234567890123456" + "890123456789012345678901234567" +
             "901234567890123456789012345678";
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_LongStringLiteral_10);
 
@@ -115,27 +134,32 @@ static void BM_Baseline_LongStringLiteral_10(benchmark::State& state) {
             .append("567890123456789012345678901234").append("678901234567890123456789012345")
             .append("789012345678901234567890123456").append("890123456789012345678901234567")
             .append("901234567890123456789012345678");
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_LongStringLiteral_10);
 
 static void BM_Minimal_LongStringLiteral_10(benchmark::State& state) {
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat(
             "012345678901234567890123456789", "123456789012345678901234567890",
             "234567890123456789012345678901", "345678901234567890123456789012",
             "456789012345678901234567890123", "567890123456789012345678901234",
             "678901234567890123456789012345", "789012345678901234567890123456",
             "890123456789012345678901234567", "901234567890123456789012345678");
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_LongStringLiteral_10);
 
 static void BM_Abseil_LongStringLiteral_10(benchmark::State& state) {
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat(
             "012345678901234567890123456789", "123456789012345678901234567890",
             "234567890123456789012345678901", "345678901234567890123456789012",
             "456789012345678901234567890123", "567890123456789012345678901234",
             "678901234567890123456789012345", "789012345678901234567890123456",
             "890123456789012345678901234567", "901234567890123456789012345678");
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_LongStringLiteral_10);
 
 
@@ -147,6 +171,7 @@ static void BM_Unoptimized_ShortStrPtr_2(benchmark::State& state) {
     const char * const s1 = "bar";
     for(auto _ : state) {
         std::string s = std::string(s0) + s1;
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_ShortStrPtr_2);
 
@@ -158,21 +183,26 @@ static void BM_Baseline_ShortStrPtr_2(benchmark::State& state) {
         std::string s;
         s.reserve(std::strlen(s0) + std::strlen(s1));
         s.append(s0).append(s1);
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_ShortStrPtr_2);
 
 static void BM_Minimal_ShortStrPtr_2(benchmark::State& state) {
     const char * const s0 = "foo";
     const char * const s1 = "bar";
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat(s0, s1);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_ShortStrPtr_2);
 
 static void BM_Abseil_ShortStrPtr_2(benchmark::State& state) {
     const char * const s0 = "foo";
     const char * const s1 = "bar";
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat(s0, s1);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_ShortStrPtr_2);
 
 
@@ -193,6 +223,7 @@ static void BM_Unoptimized_ShortStrPtr_10(benchmark::State& state) {
     for(auto _ : state) {
         std::string s = std::string(s0) + s1 + s2 + s3 + s4 +
             s5 + s6 + s7 + s8 + s9;
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_ShortStrPtr_10);
 
@@ -217,6 +248,7 @@ static void BM_Baseline_ShortStrPtr_10(benchmark::State& state) {
 
         s.append(s0).append(s1).append(s2).append(s3).append(s4).append(s5)
             .append(s6).append(s7).append(s8).append(s9);
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_ShortStrPtr_10);
 
@@ -232,8 +264,10 @@ static void BM_Minimal_ShortStrPtr_10(benchmark::State& state) {
     const char * const s7 = "cog";
     const char * const s8 = "log";
     const char * const s9 = "sob";
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat(s0, s1, s2, s3, s4, s5, s6, s7, s8, s9);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_ShortStrPtr_10);
 
 static void BM_Abseil_ShortStrPtr_10(benchmark::State& state) {
@@ -247,8 +281,10 @@ static void BM_Abseil_ShortStrPtr_10(benchmark::State& state) {
     const char * const s7 = "cog";
     const char * const s8 = "log";
     const char * const s9 = "sob";
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat(s0, s1, s2, s3, s4, s5, s6, s7, s8, s9);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_ShortStrPtr_10);
 
 
@@ -260,6 +296,7 @@ static void BM_Unoptimized_LongStrPtr_2(benchmark::State& state) {
     const char * const s1 = "123456789012345678901234567890";
     for(auto _ : state) {
         std::string s = std::string(s0) + s1;
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_LongStrPtr_2);
 
@@ -271,6 +308,7 @@ static void BM_Baseline_LongStrPtr_2(benchmark::State& state) {
         std::string s;
         s.reserve(std::strlen(s0) + std::strlen(s1));
         s.append(s0).append(s1);
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_LongStrPtr_2);
 
@@ -278,15 +316,19 @@ static void BM_Minimal_LongStrPtr_2(benchmark::State& state) {
     // Pretend we don't know the length of the pointed-to strings
     const char * const s0 = "012345678901234567890123456789";
     const char * const s1 = "123456789012345678901234567890";
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat(s0, s1);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_LongStrPtr_2);
 
 static void BM_Abseil_LongStrPtr_2(benchmark::State& state) {
     const char * const s0 = "012345678901234567890123456789";
     const char * const s1 = "123456789012345678901234567890";
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat(s0, s1);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_LongStrPtr_2);
 
 
@@ -307,6 +349,7 @@ static void BM_Unoptimized_LongStrPtr_10(benchmark::State& state) {
     for(auto _ : state) {
         std::string s = std::string(s0) + s1 + s2 + s3 + s4 +
             s5 + s6 + s7 + s8 + s9;
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_LongStrPtr_10);
 
@@ -331,6 +374,7 @@ static void BM_Baseline_LongStrPtr_10(benchmark::State& state) {
 
         s.append(s0).append(s1).append(s2).append(s3).append(s4).append(s5)
             .append(s6).append(s7).append(s8).append(s9);
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_LongStrPtr_10);
 
@@ -346,8 +390,10 @@ static void BM_Minimal_LongStrPtr_10(benchmark::State& state) {
     const char * const s7 = "789012345678901234567890123456";
     const char * const s8 = "890123456789012345678901234567";
     const char * const s9 = "901234567890123456789012345678";
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat(s0, s1, s2, s3, s4, s5, s6, s7, s8, s9);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_LongStrPtr_10);
 
 static void BM_Abseil_LongStrPtr_10(benchmark::State& state) {
@@ -361,8 +407,10 @@ static void BM_Abseil_LongStrPtr_10(benchmark::State& state) {
     const char * const s7 = "789012345678901234567890123456";
     const char * const s8 = "890123456789012345678901234567";
     const char * const s9 = "901234567890123456789012345678";
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat(s0, s1, s2, s3, s4, s5, s6, s7, s8, s9);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_LongStrPtr_10);
 
 
@@ -374,6 +422,7 @@ static void BM_Unoptimized_ShortSTLStr_2(benchmark::State& state) {
     const std::string s1{"bar"};
     for(auto _ : state) {
         std::string s = std::string(s0) + s1;
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_ShortSTLStr_2);
 
@@ -384,21 +433,26 @@ static void BM_Baseline_ShortSTLStr_2(benchmark::State& state) {
         std::string s;
         s.reserve(s0.length() + s1.length());
         s.append(s0).append(s1);
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_ShortSTLStr_2);
 
 static void BM_Minimal_ShortSTLStr_2(benchmark::State& state) {
     const std::string s0{"foo"};
     const std::string s1{"bar"};
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat(s0, s1);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_ShortSTLStr_2);
 
 static void BM_Abseil_ShortSTLStr_2(benchmark::State& state) {
     const std::string s0{"foo"};
     const std::string s1{"bar"};
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat(s0, s1);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_ShortSTLStr_2);
 
 
@@ -417,6 +471,7 @@ static void BM_Unoptimized_ShortSTLStr_10(benchmark::State& state) {
     const std::string s9{"sob"};
     for(auto _ : state) {
         std::string s = s0 + s1 + s2 + s3 + s4 + s5 + s6 + s7 + s8 + s9;
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_ShortSTLStr_10);
 
@@ -439,6 +494,7 @@ static void BM_Baseline_ShortSTLStr_10(benchmark::State& state) {
 
         s.append(s0).append(s1).append(s2).append(s3).append(s4).append(s5)
             .append(s6).append(s7).append(s8).append(s9);
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_ShortSTLStr_10);
 
@@ -453,8 +509,10 @@ static void BM_Minimal_ShortSTLStr_10(benchmark::State& state) {
     const std::string s7{"cog"};
     const std::string s8{"log"};
     const std::string s9{"sob"};
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat(s0, s1, s2, s3, s4, s5, s6, s7, s8, s9);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_ShortSTLStr_10);
 
 static void BM_Abseil_ShortSTLStr_10(benchmark::State& state) {
@@ -468,8 +526,10 @@ static void BM_Abseil_ShortSTLStr_10(benchmark::State& state) {
     const std::string s7{"cog"};
     const std::string s8{"log"};
     const std::string s9{"sob"};
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat(s0, s1, s2, s3, s4, s5, s6, s7, s8, s9);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_ShortSTLStr_10);
 
 
@@ -480,6 +540,7 @@ static void BM_Unoptimized_LongSTLStr_2(benchmark::State& state) {
     const std::string s1{"123456789012345678901234567890"};
     for(auto _ : state) {
         std::string s = s0 + s1;
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_LongSTLStr_2);
 
@@ -490,21 +551,26 @@ static void BM_Baseline_LongSTLStr_2(benchmark::State& state) {
         std::string s;
         s.reserve(s0.length() + s1.length());
         s.append(s0).append(s1);
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_LongSTLStr_2);
 
 static void BM_Minimal_LongSTLStr_2(benchmark::State& state) {
     const std::string s0{"012345678901234567890123456789"};
     const std::string s1{"123456789012345678901234567890"};
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat(s0, s1);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_LongSTLStr_2);
 
 static void BM_Abseil_LongSTLStr_2(benchmark::State& state) {
     const std::string s0{"012345678901234567890123456789"};
     const std::string s1{"123456789012345678901234567890"};
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat(s0, s1);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_LongSTLStr_2);
 
 
@@ -523,6 +589,7 @@ static void BM_Unoptimized_LongSTLStr_10(benchmark::State& state) {
     const std::string s9{"901234567890123456789012345678"};
     for(auto _ : state) {
         std::string s = s0 + s1 + s2 + s3 + s4 + s5 + s6 + s7 + s8 + s9;
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Unoptimized_LongSTLStr_10);
 
@@ -545,6 +612,7 @@ static void BM_Baseline_LongSTLStr_10(benchmark::State& state) {
 
         s.append(s0).append(s1).append(s2).append(s3).append(s4).append(s5)
             .append(s6).append(s7).append(s8).append(s9);
+        benchmark::DoNotOptimize(s);
     }
 } BENCHMARK(BM_Baseline_LongSTLStr_10);
 
@@ -559,8 +627,10 @@ static void BM_Minimal_LongSTLStr_10(benchmark::State& state) {
     const std::string s7{"789012345678901234567890123456"};
     const std::string s8{"890123456789012345678901234567"};
     const std::string s9{"901234567890123456789012345678"};
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = minimal::strcat(s0, s1, s2, s3, s4, s5, s6, s7, s8, s9);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Minimal_LongSTLStr_10);
 
 static void BM_Abseil_LongSTLStr_10(benchmark::State& state) {
@@ -574,8 +644,10 @@ static void BM_Abseil_LongSTLStr_10(benchmark::State& state) {
     const std::string s7{"789012345678901234567890123456"};
     const std::string s8{"890123456789012345678901234567"};
     const std::string s9{"901234567890123456789012345678"};
-    for(auto _ : state)
+    for(auto _ : state) {
         std::string s = absl::StrCat(s0, s1, s2, s3, s4, s5, s6, s7, s8, s9);
+        benchmark::DoNotOptimize(s);
+    }
 } BENCHMARK(BM_Abseil_LongSTLStr_10);
 
 BENCHMARK_MAIN();
