@@ -26,17 +26,17 @@ TEST(CharPointer, Three) {
 TEST(CharPointerLength, Two) {
     const char * const foo{"foo"};
     const char * const bar{"bar"};
-    const minimal::StringLike s0{foo, 3};
-    EXPECT_EQ("foobar", minimal::strcat(s0, minimal::StringLike{bar, 3}));
+    const std::string_view s0{foo, 3};
+    EXPECT_EQ("foobar", minimal::strcat(s0, std::string_view{bar, 3}));
 }
 
 TEST(CharPointerLength, Three) {
     const char * const foo{"foo"};
     const char * const bar{"bar"};
     const char * const bat{"bat"};
-    const minimal::StringLike s0{foo, 3};
-    const minimal::StringLike s1{bar, 3};
-    const minimal::StringLike s2{bat, 3};
+    const std::string_view s0{foo, 3};
+    const std::string_view s1{bar, 3};
+    const std::string_view s2{bat, 3};
     EXPECT_EQ("foobarbat", minimal::strcat(s0, s1, s2));
 }
 
