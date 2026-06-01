@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.14)
 project(strcat)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -6,16 +6,45 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 set(CMAKE_BUILD_TYPE Release)
 
+include(FetchContent)
 
-add_subdirectory(googletest) # https://github.com/google/googletest
+set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
+set(INSTALL_GMOCK OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        v1.17.0
+)
+FetchContent_MakeAvailable(googletest)
 
-set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Disable buggy C++03/C++11 related tests" FORCE)
-add_subdirectory(benchmark) # https://github.com/google/benchmark
+set(BENCHMARK_ENABLE_GTEST_TESTS OFF CACHE BOOL "" FORCE)
+set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
+set(BENCHMARK_ENABLE_INSTALL OFF CACHE BOOL "" FORCE)
+set(BENCHMARK_ENABLE_INSTALL_DOCS OFF CACHE BOOL "" FORCE)
+set(BENCHMARK_ENABLE_INSTALL_TOOLS OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+  benchmark
+  GIT_REPOSITORY https://github.com/google/benchmark.git
+  GIT_TAG        v1.9.5
+)
+FetchContent_MakeAvailable(benchmark)
 
-set(BUILD_TESTING OFF CACHE BOOL "Disable tests which depend on benchmark" FORCE)
-add_subdirectory(cctz) # https://github.com/google/cctz.git
+set(BUILD_TOOLS OFF CACHE BOOL "" FORCE)
+set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+  cctz
+  GIT_REPOSITORY https://github.com/google/cctz.git
+  GIT_TAG        v2.5
+)
+FetchContent_MakeAvailable(cctz)
 
-add_subdirectory(abseil-cpp) # https://github.com/abseil/abseil-cpp.git
+FetchContent_Declare(
+  abseil-cpp
+  GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
+  GIT_TAG        20220623.2
+)
+FetchContent_MakeAvailable(abseil-cpp)
 
 
 add_executable(strcat_benchmark microbench.cpp)
